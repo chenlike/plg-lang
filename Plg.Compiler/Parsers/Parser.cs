@@ -1,7 +1,7 @@
 ﻿using Plg.Compiler.AST;
 using Plg.Compiler.Lexer;
 
-namespace Plg.Compiler
+namespace Plg.Compiler.Parsers
 {
     public partial class Parser
     {
@@ -80,6 +80,7 @@ namespace Plg.Compiler
             _tokenizer.NextTokenIs(TokenKind.Equal);
             _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
 
+            variable.Expression = ParseExpression();
         }
 
 

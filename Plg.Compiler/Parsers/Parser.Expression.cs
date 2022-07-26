@@ -12,7 +12,7 @@ namespace Plg.Compiler.Parsers
 
         public Expression ParseExpression()
         {
-            
+
             // 1;
             // 1 + 2 * 3;
             // "asd";
@@ -20,7 +20,7 @@ namespace Plg.Compiler.Parsers
             // aaaa + "bbbb";
             // aaa && bbb
             
-            
+            return null;
             
         }
 
