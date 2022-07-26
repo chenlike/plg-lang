@@ -7,6 +7,16 @@
 
             Console.WriteLine("Hello, World!");
 
+
+            var a = "123jkljasd" switch
+            {
+                string t when t.StartsWith("123") => "123",
+                string t when t.Contains("jasd") => "abc",
+                _ => throw new NotImplementedException(),
+            };
+
+            Console.WriteLine();
+
             /*
              
 let variable1:string = "Hello World";
@@ -23,7 +33,7 @@ fn sa(a:string,b:btc) -> (sss:number,bbb:string) {
 
 print(variable);
 
-let res = sa(variable1,variable2);
+let res:any = sa(variable1,variable2);
 
             
             

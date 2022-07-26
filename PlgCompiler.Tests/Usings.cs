@@ -1,4 +1,5 @@
 global using NUnit.Framework;
-global using PlgCompiler.Common;
-global using PlgCompiler.Lexer;
-global using PlgCompiler.Parser; 
+global using Plg.Compiler;
+global using Plg.Compiler.Lexer;
+global using Plg.Compiler.Common;
+

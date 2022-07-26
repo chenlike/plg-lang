@@ -4,11 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlgCompiler.Lexer
+namespace Plg.Compiler.Lexer
 {
-    /// <summary>
-    /// token 类型
-    /// </summary>
     public enum TokenKind
     {
 
@@ -22,7 +19,18 @@ namespace PlgCompiler.Lexer
         EOF,
 
         /// <summary>
-        /// 分号
+        /// 变量名 [_A-Za-z][_0-9A-Za-z]*
+        /// </summary>
+        Name,
+        /// <summary>
+        /// 数字
+        /// </summary>
+        Number,
+
+        
+
+        /// <summary>
+        /// 分号 ;
         /// </summary>
         Semicolon,
         /// <summary>
@@ -68,7 +76,7 @@ namespace PlgCompiler.Lexer
         /// ||
         /// </summary>
         Or,
-        
+
 
         /// <summary>
         /// 加 +
@@ -124,60 +132,61 @@ namespace PlgCompiler.Lexer
         /// <summary>
         /// 字符串 string
         /// </summary>
-        String,
+        TypeString,
         /// <summary>
         /// 数字 number (包含小数)
         /// </summary>
-        Number,
+        TypeNumber,
         /// <summary>
         /// 布尔 bool   
         /// </summary>
-        Bool,
+        TypeBool,
+
         #endregion
+        /// <summary>
+        /// const true
+        /// </summary>
+        True,
+        /// <summary>
+        /// const false
+        /// </summary>
+        Fasle,
+
+        /*            
+let variable1:string = "Hello World";
+let variable2:number = 123123;
+let variable3:bool = true;
+
+fn sa(a:string,b:btc) -> (sss:number,bbb:string) {
+    if(a == "" && b ==1 || b == 2){
+    }
+    for(){
+            
+    }
+}
+
+print(variable);
+
+let res = sa(variable1,variable2);
+         */
+
+
 
 
 
     }
 
-    public static class TokenMapper
+    public class Token
     {
-        public static SortedDictionary<TokenKind, string> Map = new SortedDictionary<TokenKind, string>(){
-            { TokenKind.Semicolon,";" },
-            { TokenKind.Colon,":" },
-            { TokenKind.Equal,"=" },
-            { TokenKind.Quote,"\"" },
-            { TokenKind.Comma,"," },
-            { TokenKind.LeftBrace,"{" },
-            { TokenKind.RightBrace,"}" },
-            { TokenKind.LeftBracket,"[" },
-            { TokenKind.RightBracket,"]" },
-            { TokenKind.Add,"+" },
-            { TokenKind.Sub,"-" },
-            { TokenKind.Mul,"*" },
-            { TokenKind.Div,"/" },
-            { TokenKind.GreatThan,">" },
-            { TokenKind.LessThan,"<" },
-            { TokenKind.And,"&&" },
-            { TokenKind.Or,"||" },
-            { TokenKind.Let,"let" },
-            { TokenKind.Fn,"fn" },
-            { TokenKind.If,"if" },
-            { TokenKind.For,"for" },
-
-
-            { TokenKind.String,"string" },
-            { TokenKind.Number,"number" },
-            { TokenKind.Bool,"bool" },
-
-
-            { TokenKind.Ignore,"" },
-            { TokenKind.EOF,"" },
-
-
-        };
-
+        /// <summary>
+        /// token 类型
+        /// </summary>
+        public TokenKind Kind { get; set; }
         
+        /// <summary>
+        /// 值
+        /// </summary>
+        public string Value { get; set; }
         
     }
-
 }

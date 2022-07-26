@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlgCompiler.Definitions
+namespace Plg.Compiler.AST
 {
-    public class Statement
+    public class Scope
     {
-
-
-
     }
 }

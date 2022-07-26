@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PlgCompiler\PlgCompiler.csproj" />
+    <ProjectReference Include="..\Plg.Compiler\Plg.Compiler.csproj" />
   </ItemGroup>
 
 </Project>
