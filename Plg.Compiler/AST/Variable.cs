@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plg.Compiler.AST.Expressions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,10 @@ namespace Plg.Compiler.AST
         /// 表达式
         /// </summary>
         public Expression Expression { get; set; }
+        /// <summary>
+        /// 当前值
+        /// </summary>
+        public object Value { get; set; }
 
     }
 }

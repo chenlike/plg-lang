@@ -54,19 +54,28 @@ namespace Plg.Compiler.Lexer
         /// <summary>
         /// 左花括号 {
         /// </summary>
-        LeftBrace,
+        LeftCurly,
         /// <summary>
         /// 右花括号 }
         /// </summary>
-        RightBrace,
+        RightCurly,
         /// <summary>
-        /// 左括号 [
+        /// 左方括号 [
         /// </summary>
         LeftBracket,
         /// <summary>
-        /// 右括号 ]
+        /// 右方括号 ]
         /// </summary>
         RightBracket,
+
+        /// <summary>
+        /// 左括号 (
+        /// </summary>
+        LeftParenthesis,
+        /// <summary>
+        /// 右括号 )
+        /// </summary>
+        RightParenthesis,
 
         /// <summary>
         /// &&

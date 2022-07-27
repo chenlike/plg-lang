@@ -17,7 +17,7 @@ namespace Plg.Compiler.Parsers
 
         public void Parse()
         {
-
+            Scope topScope = Scope.CreateTopScope();
             while (_tokenizer.LookAhead().Kind != TokenKind.EOF)
             {
 
@@ -25,7 +25,7 @@ namespace Plg.Compiler.Parsers
                 switch (token)
                 {
                     case TokenKind.Let:
-                        ParseAssignment();
+                        ParseAssignment(topScope);
                         break;
                     case TokenKind.If:
                         break;
@@ -40,7 +40,7 @@ namespace Plg.Compiler.Parsers
         /// <summary>
         /// 声明语句
         /// </summary>
-        public void ParseAssignment()
+        public Variable ParseAssignment(Scope scope)
         {
             /*
              let aa:string = "123";
@@ -51,9 +51,10 @@ namespace Plg.Compiler.Parsers
 
             // 解析变量名
             var nameToken = _tokenizer.NextTokenIs(TokenKind.Name);
-            _tokenizer.NextTokenIs(TokenKind.Ignore);
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
 
-
+            _tokenizer.NextTokenIs(TokenKind.Colon);
+            
             Variable variable = new Variable()
             {
                 Name = nameToken.Value
@@ -79,8 +80,13 @@ namespace Plg.Compiler.Parsers
             _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
             _tokenizer.NextTokenIs(TokenKind.Equal);
             _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
-
             variable.Expression = ParseExpression();
+
+            
+            _tokenizer.NextTokenIs(TokenKind.Semicolon);
+
+            scope.AddVariable(variable);
+            return variable;
         }
 
 

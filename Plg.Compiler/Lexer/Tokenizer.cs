@@ -128,9 +128,8 @@ namespace Plg.Compiler.Lexer
                 };
             }
 
-            var nameRegex = new Regex(@"[_A-Za-z][_0-9A-Za-z]*");
-            var numberRegex = new Regex(@"");
 
+            
             var token = _sourceCode switch
             {
                 string t when t.StartsWith(";") => new Token() { Kind = TokenKind.Semicolon,Value = ";" },
@@ -138,11 +137,13 @@ namespace Plg.Compiler.Lexer
                 string t when t.StartsWith("=") => new Token() { Kind = TokenKind.Equal, Value = "=" },
                 string t when t.StartsWith("\"") => new Token() { Kind = TokenKind.Quote, Value = "\"" },
                 string t when t.StartsWith(",") => new Token() { Kind = TokenKind.Comma, Value = "," },
-                string t when t.StartsWith("{") => new Token() { Kind = TokenKind.LeftBrace, Value = "{" },
-                string t when t.StartsWith("}") => new Token() { Kind = TokenKind.RightBrace, Value = "}" },
+                string t when t.StartsWith("{") => new Token() { Kind = TokenKind.LeftCurly, Value = "{" },
+                string t when t.StartsWith("}") => new Token() { Kind = TokenKind.RightCurly, Value = "}" },
                 string t when t.StartsWith("[") => new Token() { Kind = TokenKind.LeftBracket, Value = "[" },
                 string t when t.StartsWith("]") => new Token() { Kind = TokenKind.RightBracket, Value = "]" },
-                
+                string t when t.StartsWith("(") => new Token() { Kind = TokenKind.LeftParenthesis, Value = "(" },
+                string t when t.StartsWith(")") => new Token() { Kind = TokenKind.RightParenthesis, Value = ")" },
+
                 string t when t.StartsWith("&&") => new Token() { Kind = TokenKind.And, Value = "&&" },
                 string t when t.StartsWith("||") => new Token() { Kind = TokenKind.Or, Value = "||" },
                 
@@ -155,23 +156,24 @@ namespace Plg.Compiler.Lexer
                 string t when t.StartsWith("<") => new Token() { Kind = TokenKind.LessThan, Value = "<" },
 
                 
-                string t when t.StartsWith("let") => new Token() { Kind = TokenKind.Let, Value = "let" },
-                string t when t.StartsWith("fn") => new Token() { Kind = TokenKind.Fn, Value = "fn" },
-                string t when t.StartsWith("if") => new Token() { Kind = TokenKind.If, Value = "if" },
-                string t when t.StartsWith("for") => new Token() { Kind = TokenKind.For, Value = "for" },
+                string t when new Regex(@"^let(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Let, Value = "let" },
+                string t when new Regex(@"^fn(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Fn, Value = "fn" },
+                string t when new Regex(@"^if(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.If, Value = "if" },
+                string t when new Regex(@"^for(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.For, Value = "for" },
 
-                string t when t.StartsWith("string") => new Token() { Kind = TokenKind.TypeString, Value = "string" },
-                string t when t.StartsWith("number") => new Token() { Kind = TokenKind.TypeNumber, Value = "number" },
-                string t when t.StartsWith("bool") => new Token() { Kind = TokenKind.TypeBool, Value = "bool" },
+                string t when new Regex(@"^string(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeString, Value = "string" },
+                string t when new Regex(@"^number(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeNumber, Value = "number" },
+                string t when new Regex(@"^bool(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeBool, Value = "bool" },
                 
-                string t when t.StartsWith("true") => new Token() { Kind = TokenKind.True, Value = "true" },
-                string t when t.StartsWith("false") => new Token() { Kind = TokenKind.Fasle, Value = "false" },
+                string t when new Regex(@"^true(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.True, Value = "true" },
+                string t when new Regex(@"^false(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Fasle, Value = "false" },
 
-                string t when nameRegex.Match(t) is var match && match.Success => new Token() { Kind = TokenKind.Name, Value = match.Value },
-                string t when numberRegex.Match(t) is var match && match.Success => new Token() { Kind = TokenKind.Number, Value = match.Value },
+                string t when new Regex(@"^[_A-Za-z][_0-9A-Za-z]*").Match(t) is var match && match.Success => new Token() { Kind = TokenKind.Name, Value = match.Value },
+                string t when new Regex(@"^-?\d+(\.\d{1,2})?").Match(t) is var match && match.Success => new Token() { Kind = TokenKind.Number, Value = match.Value },
 
                 _ => throw new NotImplementedException(),
             };
+            skipSouceCode(token.Value.Length);
 
             return token;
         }
