@@ -19,7 +19,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let numberTest:number = 1;");
-                var variable = parser.ParseAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope);
 
                 Assert.IsTrue(variable.Name == "numberTest");
                 Assert.IsTrue(variable.Type == VariableType.Number);
@@ -31,7 +31,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let stringTest:string = \"114514\";");
-                var variable = parser.ParseAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope);
 
                 Assert.IsTrue(variable.Name == "stringTest");
                 Assert.IsTrue(variable.Type == VariableType.String);
@@ -42,7 +42,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let boolTest:bool =false;");
-                var variable = parser.ParseAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope);
 
                 Assert.IsTrue(variable.Name == "boolTest");
                 Assert.IsTrue(variable.Type == VariableType.Bool);
@@ -52,18 +52,37 @@ namespace PlgCompiler.Tests.ParserTests
         }
         
         [Test]
-        public void ParseAssignmentMany()
+        public void ReversePolishNotation()
         {
             {
                 var scope = Scope.CreateTopScope();
 
-                Parser parser = new Parser("let numberTest:number = 1 + (2 + 3) * 5 / 4;");
-                var variable = parser.ParseAssignment(scope);
+                Parser parser = new Parser("let numberTest:number = a+b*c+(d*e+f)*g;");
+                var variable = parser.ParseVariaibleAssignment(scope);
 
                 Assert.IsTrue(variable.Name == "numberTest");
                 Assert.IsTrue(variable.Type == VariableType.Number);
                 string exp = variable.Expression.ToString();
                 Console.WriteLine();
+
+                Assert.IsTrue(variable.Expression.Items[0].Value == "a");
+                Assert.IsTrue(variable.Expression.Items[1].Value == "b");
+                Assert.IsTrue(variable.Expression.Items[2].Value == "c");
+                Assert.IsTrue(variable.Expression.Items[3].Token.Kind ==  TokenKind.Mul);
+                Assert.IsTrue(variable.Expression.Items[4].Token.Kind == TokenKind.Add);
+                Assert.IsTrue(variable.Expression.Items[5].Value == "d");
+                Assert.IsTrue(variable.Expression.Items[6].Value == "e");
+                Assert.IsTrue(variable.Expression.Items[7].Token.Kind == TokenKind.Mul);
+                Assert.IsTrue(variable.Expression.Items[8].Value == "f");
+                Assert.IsTrue(variable.Expression.Items[9].Token.Kind == TokenKind.Add);
+                Assert.IsTrue(variable.Expression.Items[10].Value == "g");
+                Assert.IsTrue(variable.Expression.Items[11].Token.Kind == TokenKind.Mul);
+                Assert.IsTrue(variable.Expression.Items[12].Token.Kind == TokenKind.Add);
+
+                // abc*+de*f+g*+
+
+
+                // https://www.cnblogs.com/wkfvawl/p/12864789.html
 
             }
         }

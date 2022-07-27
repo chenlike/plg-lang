@@ -150,7 +150,10 @@ namespace Plg.Compiler.Lexer
         /// 布尔 bool   
         /// </summary>
         TypeBool,
-
+        /// <summary>
+        /// 对象 plg
+        /// </summary>
+        TypePlg,
         #endregion
         /// <summary>
         /// const true

@@ -38,6 +38,7 @@ namespace Plg.Compiler.Lexer
             { TokenKind.TypeString,"string" },
             { TokenKind.TypeNumber,"number" },
             { TokenKind.TypeBool,"bool" },
+            { TokenKind.TypeBool,"plg" },
 
             { TokenKind.True,"true" },
             { TokenKind.Fasle,"false" },

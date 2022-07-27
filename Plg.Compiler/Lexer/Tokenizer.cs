@@ -164,7 +164,8 @@ namespace Plg.Compiler.Lexer
                 string t when new Regex(@"^string(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeString, Value = "string" },
                 string t when new Regex(@"^number(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeNumber, Value = "number" },
                 string t when new Regex(@"^bool(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeBool, Value = "bool" },
-                
+                string t when new Regex(@"^plg(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypePlg, Value = "plg" },
+
                 string t when new Regex(@"^true(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.True, Value = "true" },
                 string t when new Regex(@"^false(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Fasle, Value = "false" },
 

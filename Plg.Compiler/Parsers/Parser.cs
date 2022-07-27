@@ -25,7 +25,7 @@ namespace Plg.Compiler.Parsers
                 switch (token)
                 {
                     case TokenKind.Let:
-                        ParseAssignment(topScope);
+                        ParseVariaibleAssignment(topScope);
                         break;
                     case TokenKind.If:
                         break;
@@ -40,7 +40,7 @@ namespace Plg.Compiler.Parsers
         /// <summary>
         /// 声明语句
         /// </summary>
-        public Variable ParseAssignment(Scope scope)
+        public Variable ParseVariaibleAssignment(Scope scope)
         {
             /*
              let aa:string = "123";
