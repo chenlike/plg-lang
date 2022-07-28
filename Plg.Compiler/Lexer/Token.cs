@@ -41,6 +41,10 @@ namespace Plg.Compiler.Lexer
         /// 等号 = 
         /// </summary>
         Equal,
+        /// <summary>
+        /// == 
+        /// </summary>
+        DoubleEqual,
 
         /// <summary>
         /// 引号 "
@@ -130,9 +134,18 @@ namespace Plg.Compiler.Lexer
         /// </summary>
         If,
         /// <summary>
+        /// else if
+        /// </summary>
+        Elif,
+        /// <summary>
+        /// else
+        /// </summary>
+        Else,
+        /// <summary>
         /// for
         /// </summary>
         For,
+
 
 
 

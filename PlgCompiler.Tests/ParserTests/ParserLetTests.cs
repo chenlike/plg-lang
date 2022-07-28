@@ -1,4 +1,5 @@
 ﻿using Plg.Compiler.AST;
+using Plg.Compiler.AST.Commands;
 using Plg.Compiler.AST.Expressions;
 using Plg.Compiler.Parsers;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PlgCompiler.Tests.ParserTests
 {
-    public class ParserStatementTests
+    public class ParserLetTests
     {
 
         [Test]
@@ -19,7 +20,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let numberTest:number = 1;");
-                var variable = parser.ParseVariaibleAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope).Variable;
 
                 Assert.IsTrue(variable.Name == "numberTest");
                 Assert.IsTrue(variable.Type == VariableType.Number);
@@ -31,7 +32,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let stringTest:string = \"114514\";");
-                var variable = parser.ParseVariaibleAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope).Variable;
 
                 Assert.IsTrue(variable.Name == "stringTest");
                 Assert.IsTrue(variable.Type == VariableType.String);
@@ -42,7 +43,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let boolTest:bool =false;");
-                var variable = parser.ParseVariaibleAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope).Variable;
 
                 Assert.IsTrue(variable.Name == "boolTest");
                 Assert.IsTrue(variable.Type == VariableType.Bool);
@@ -58,7 +59,7 @@ namespace PlgCompiler.Tests.ParserTests
                 var scope = Scope.CreateTopScope();
 
                 Parser parser = new Parser("let numberTest:number = a+b*c+(d*e+f)*g;");
-                var variable = parser.ParseVariaibleAssignment(scope);
+                var variable = parser.ParseVariaibleAssignment(scope).Variable;
 
                 Assert.IsTrue(variable.Name == "numberTest");
                 Assert.IsTrue(variable.Type == VariableType.Number);
@@ -86,5 +87,8 @@ namespace PlgCompiler.Tests.ParserTests
 
             }
         }
+
+
+
     }
 }

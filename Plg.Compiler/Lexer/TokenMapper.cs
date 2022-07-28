@@ -12,6 +12,7 @@ namespace Plg.Compiler.Lexer
             { TokenKind.Semicolon,";" },
             { TokenKind.Colon,":" },
             { TokenKind.Equal,"=" },
+            { TokenKind.DoubleEqual,"==" },
             { TokenKind.Quote,"\"" },
             { TokenKind.Comma,"," },
             { TokenKind.LeftCurly,"{" },
@@ -32,13 +33,15 @@ namespace Plg.Compiler.Lexer
             { TokenKind.Let,"let" },
             { TokenKind.Fn,"fn" },
             { TokenKind.If,"if" },
+            { TokenKind.Elif,"elif" },
+            { TokenKind.Else,"else" },
             { TokenKind.For,"for" },
 
 
             { TokenKind.TypeString,"string" },
             { TokenKind.TypeNumber,"number" },
             { TokenKind.TypeBool,"bool" },
-            { TokenKind.TypeBool,"plg" },
+            { TokenKind.TypePlg,"plg" },
 
             { TokenKind.True,"true" },
             { TokenKind.Fasle,"false" },

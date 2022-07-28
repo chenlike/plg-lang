@@ -134,6 +134,7 @@ namespace Plg.Compiler.Lexer
             {
                 string t when t.StartsWith(";") => new Token() { Kind = TokenKind.Semicolon,Value = ";" },
                 string t when t.StartsWith(":") => new Token() { Kind = TokenKind.Colon, Value = ":" },
+                string t when t.StartsWith("==") => new Token() { Kind = TokenKind.DoubleEqual, Value = "==" },
                 string t when t.StartsWith("=") => new Token() { Kind = TokenKind.Equal, Value = "=" },
                 string t when t.StartsWith("\"") => new Token() { Kind = TokenKind.Quote, Value = "\"" },
                 string t when t.StartsWith(",") => new Token() { Kind = TokenKind.Comma, Value = "," },
@@ -155,10 +156,13 @@ namespace Plg.Compiler.Lexer
                 string t when t.StartsWith(">") => new Token() { Kind = TokenKind.GreatThan, Value = ">" },
                 string t when t.StartsWith("<") => new Token() { Kind = TokenKind.LessThan, Value = "<" },
 
-                
+
+
                 string t when new Regex(@"^let(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Let, Value = "let" },
                 string t when new Regex(@"^fn(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Fn, Value = "fn" },
                 string t when new Regex(@"^if(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.If, Value = "if" },
+                string t when new Regex(@"^elif(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Elif, Value = "elif" },
+                string t when new Regex(@"^else(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Else, Value = "else" },
                 string t when new Regex(@"^for(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.For, Value = "for" },
 
                 string t when new Regex(@"^string(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeString, Value = "string" },

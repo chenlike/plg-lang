@@ -26,6 +26,7 @@ namespace Plg.Compiler.Parsers
             // "asd";
             // "aa" + "bb";
             // aaaa + "bbbb";
+            // 1 == 2;
 
             _tokenizer.LookAheadAndSkip(Lexer.TokenKind.Ignore);
 
@@ -40,7 +41,7 @@ namespace Plg.Compiler.Parsers
             var headToken = _tokenizer.LookAhead();
             
             // 遇到终止 ;  就结束
-            while (headToken.Kind != TokenKind.Semicolon)
+            while (headToken.Kind != TokenKind.Semicolon && headToken.Kind != TokenKind.LeftCurly)
             {
 
                 switch (headToken.Kind)
@@ -92,10 +93,14 @@ namespace Plg.Compiler.Parsers
                     case TokenKind.Sub:
                     case TokenKind.Mul:
                     case TokenKind.Div:
+                    case TokenKind.DoubleEqual:
+                    case TokenKind.And:
+                    case TokenKind.Or:
                         expression.Items.Add(new ExpressionItem()
                         {
                             Token = new Token() { Kind = headToken.Kind},
                             Type = ExpressionItemType.Operator,
+                            Value = TokenMapper.Map[headToken.Kind]
                         });
                         _tokenizer.NextTokenIs(headToken.Kind);
                         break;

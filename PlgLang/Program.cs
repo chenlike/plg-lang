@@ -23,17 +23,18 @@ let variable1:string = "Hello World";
 let variable2:number = 123123;
 let variable3:bool = true;
 
-fn sa(a:string,b:btc) -> (sss:number,bbb:string) {
-    if(a == "" && b ==1 || b == 2){
+fn sa(a:string,b:number) -> (sss:number,bbb:string) {
+    if a == "" && b ==1 || b == 2 {
     }
-    for(){
-            
-    }
+
 }
 
 print(variable);
 
-let res:any = sa(variable1,variable2);
+let res:plg = sa(variable1,variable2);
+let sss:string,b:string = sa(variable1,variable2);        
+            
+res.sss == 1
 
             
             
