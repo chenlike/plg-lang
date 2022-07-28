@@ -118,6 +118,30 @@ namespace Plg.Compiler.Lexer
         LessThan,
 
 
+        /// <summary>
+        ///  +=
+        /// </summary>
+        AddEqual,
+        /// <summary>
+        /// -=
+        /// </summary>
+        SubEqual,
+        /// <summary>
+        /// *=
+        /// </summary>
+        MulEqual,
+        /// <summary>
+        /// /=
+        /// </summary>
+        DivEqual,
+        /// <summary>
+        /// ++
+        /// </summary>
+        Increase,
+        /// <summary>
+        /// --
+        /// </summary>
+        Decrease,
 
 
 

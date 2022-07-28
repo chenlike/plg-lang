@@ -25,7 +25,7 @@ namespace PlgCompiler.Tests.ParserTests
                 Assert.IsTrue(ifCmd.IfExpression.Expression.Items[2].Value == "==");
 
 
-                Assert.IsTrue(ifCmd.IfExpression.Scope.Commands[0].Type == CommandType.VariableAssignment);
+                Assert.IsTrue(ifCmd.IfExpression.Scope.Commands[0].Type == CommandType.DefineVariable);
             }
 
 
@@ -53,9 +53,9 @@ let a:string = asd;
                 Assert.IsTrue(ifCmd.IfExpression.Expression.Items[2].Value == "==");
 
 
-                Assert.IsTrue(ifCmd.IfExpression.Scope.Commands[0].Type == CommandType.VariableAssignment);
+                Assert.IsTrue(ifCmd.IfExpression.Scope.Commands[0].Type == CommandType.DefineVariable);
                 Assert.IsTrue(ifCmd.ElseScope != null);
-                Assert.IsTrue(ifCmd.ElseScope.Commands[0].Type == CommandType.VariableAssignment);
+                Assert.IsTrue(ifCmd.ElseScope.Commands[0].Type == CommandType.DefineVariable);
                 Assert.IsTrue(ifCmd.ElseScope.Commands.Count == 1);
             }
 

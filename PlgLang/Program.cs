@@ -23,6 +23,11 @@ let variable1:string = "Hello World";
 let variable2:number = 123123;
 let variable3:bool = true;
 
+variable2 += 1;
+variable2 -= "";
+
+            
+
 fn sa(a:string,b:number) -> (sss:number,bbb:string) {
     if a == "" && b ==1 || b == 2 {
     }

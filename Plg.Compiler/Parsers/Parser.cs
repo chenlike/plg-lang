@@ -32,11 +32,17 @@ namespace Plg.Compiler.Parsers
             switch (token)
             {
                 case TokenKind.Let:
-                    ParseVariaibleAssignment(scope);
+                    // 变量定义语句
+                    ParseDefineVariaible(scope);
+                    break;
+                case TokenKind.Name:
+                    // 变量赋值语句
+                    ParseVariableAssign(scope);
                     break;
                 case TokenKind.If:
                     ParseIf(scope);
                     break;
+                    
             }
         }
 
@@ -46,9 +52,9 @@ namespace Plg.Compiler.Parsers
 
         
         /// <summary>
-        /// 声明语句
+        /// 变量声明语句
         /// </summary>
-        public VariableAssignmentCommand ParseVariaibleAssignment(Scope scope)
+        public DefineVariableCommand ParseDefineVariaible(Scope scope)
         {
             /*
              let aa:string = "123";
@@ -92,10 +98,58 @@ namespace Plg.Compiler.Parsers
             
             
             _tokenizer.NextTokenIs(TokenKind.Semicolon);
-            var cmd = new VariableAssignmentCommand(variable);
+            var cmd = new DefineVariableCommand(variable);
             scope.Commands.Add(cmd);
             return cmd;
         }
+
+        /// <summary>
+        /// 解析变量赋值语句
+        /// </summary>
+        /// <param name="scope"></param>
+        public void ParseVariableAssign(Scope scope)
+        {
+            // 变量赋值语句
+
+            // a++; a--;
+            // a+=1 a -=1;
+            // a *= ab +2;
+            // a = b;
+            
+            var name = _tokenizer.NextTokenIs(TokenKind.Name);
+
+            switch (_tokenizer.LookAhead().Kind)
+            {
+
+                case TokenKind.Increase:
+                    break;
+                case TokenKind.Decrease:
+                    break;
+                case TokenKind.AddEqual:
+                    break;
+                case TokenKind.SubEqual:
+                    break;
+                case TokenKind.MulEqual:
+                    break;
+                case TokenKind.DivEqual:
+                    break;
+                case TokenKind.Equal:
+                    break;
+                    
+                default:
+                    break;
+            }
+
+            
+            
+            
+            
+
+
+
+        }
+
+
 
 
         /// <summary>
@@ -189,8 +243,10 @@ namespace Plg.Compiler.Parsers
                     // 识别 else 
                     _tokenizer.NextTokenIs(TokenKind.Else);
                     _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+                    // {
                     _tokenizer.NextTokenIs(TokenKind.LeftCurly);
                     var elseScope = scope.CreateChildScope();
+                    // }
                     while (_tokenizer.LookAhead().Kind != TokenKind.RightCurly)
                     {
                         ParseStatement(elseScope);

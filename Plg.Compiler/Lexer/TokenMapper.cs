@@ -26,6 +26,18 @@ namespace Plg.Compiler.Lexer
             { TokenKind.Sub,"-" },
             { TokenKind.Mul,"*" },
             { TokenKind.Div,"/" },
+
+
+            { TokenKind.AddEqual,"+=" },
+            { TokenKind.SubEqual,"-=" },
+            { TokenKind.MulEqual,"*=" },
+            { TokenKind.DivEqual,"/=" },
+            { TokenKind.Increase,"++" },
+            { TokenKind.Decrease,"--" },
+
+
+
+
             { TokenKind.GreatThan,">" },
             { TokenKind.LessThan,"<" },
             { TokenKind.And,"&&" },

@@ -134,6 +134,8 @@ namespace Plg.Compiler.Lexer
             {
                 string t when t.StartsWith(";") => new Token() { Kind = TokenKind.Semicolon,Value = ";" },
                 string t when t.StartsWith(":") => new Token() { Kind = TokenKind.Colon, Value = ":" },
+                
+
                 string t when t.StartsWith("==") => new Token() { Kind = TokenKind.DoubleEqual, Value = "==" },
                 string t when t.StartsWith("=") => new Token() { Kind = TokenKind.Equal, Value = "=" },
                 string t when t.StartsWith("\"") => new Token() { Kind = TokenKind.Quote, Value = "\"" },
@@ -147,12 +149,23 @@ namespace Plg.Compiler.Lexer
 
                 string t when t.StartsWith("&&") => new Token() { Kind = TokenKind.And, Value = "&&" },
                 string t when t.StartsWith("||") => new Token() { Kind = TokenKind.Or, Value = "||" },
-                
+
+
+                string t when t.StartsWith("+=") => new Token() { Kind = TokenKind.AddEqual, Value = "+=" },
+                string t when t.StartsWith("-=") => new Token() { Kind = TokenKind.SubEqual, Value = "-=" },
+                string t when t.StartsWith("*=") => new Token() { Kind = TokenKind.MulEqual, Value = "*=" },
+                string t when t.StartsWith("/=") => new Token() { Kind = TokenKind.DivEqual, Value = "/=" },
+
+                string t when t.StartsWith("++") => new Token() { Kind = TokenKind.Increase, Value = "++" },
+                string t when t.StartsWith("--") => new Token() { Kind = TokenKind.Decrease, Value = "--" },
+
                 string t when t.StartsWith("+") => new Token() { Kind = TokenKind.Add, Value = "+" },
                 string t when t.StartsWith("-") => new Token() { Kind = TokenKind.Sub, Value = "-" },
                 string t when t.StartsWith("*") => new Token() { Kind = TokenKind.Mul, Value = "*" },
                 string t when t.StartsWith("/") => new Token() { Kind = TokenKind.Div, Value = "/" },
 
+
+                
                 string t when t.StartsWith(">") => new Token() { Kind = TokenKind.GreatThan, Value = ">" },
                 string t when t.StartsWith("<") => new Token() { Kind = TokenKind.LessThan, Value = "<" },
 

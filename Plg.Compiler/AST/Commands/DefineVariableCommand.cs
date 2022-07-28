@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Plg.Compiler.AST.Commands
 {
-    public class VariableAssignmentCommand : ICommand
+    public class DefineVariableCommand : ICommand
     {
-        public CommandType Type => CommandType.VariableAssignment;
+        public CommandType Type => CommandType.DefineVariable;
 
 
         public Variable Variable { get; private set; }
-        public VariableAssignmentCommand(Variable variable)
+        public DefineVariableCommand(Variable variable)
         {
             Variable = variable;
         }

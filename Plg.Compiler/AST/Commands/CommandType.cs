@@ -14,7 +14,11 @@ namespace Plg.Compiler.AST.Commands
         /// <summary>
         /// 变量声明
         /// </summary>
-        VariableAssignment,
+        DefineVariable,
+        /// <summary>
+        /// 变量赋值
+        /// </summary>
+        VariableAssign,
         /// <summary>
         /// If 语句
         /// </summary>
