@@ -58,7 +58,11 @@ namespace Plg.Compiler.Lexer
             var token = LookAheadAndSkip(kind);
             if (token.Kind != kind)
             {
-                throw new Exception("下一个token类型错误");
+                Logger.Log(_rawCode.Insert(_currentPos, "[!!!出现错误!!!]"));
+
+                    
+                
+                throw new Exception("下一个token类型错误 lineNum:" + _lineNum);
             }
             return token;
         }

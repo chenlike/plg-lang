@@ -17,13 +17,14 @@ namespace Plg.Compiler.Parsers
 
 
 
-        public void Parse()
+        public Scope Parse()
         {
             Scope topScope = Scope.CreateScope();
             while (_tokenizer.LookAhead().Kind != TokenKind.EOF)
             {
                 ParseStatement(topScope);
             }
+            return topScope;
         }
 
         public void ParseStatement(Scope scope)
@@ -53,6 +54,9 @@ namespace Plg.Compiler.Parsers
                     ParseBreak(scope);
                     break;
 
+                case TokenKind.Fn:
+                    ParseFunc(scope);
+                    break;
             }
         }
 
@@ -120,7 +124,7 @@ namespace Plg.Compiler.Parsers
             {
                 Name = nameToken.Value
             };
-            
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
             switch (_tokenizer.LookAhead().Kind)
             {
                 case TokenKind.TypeString:
@@ -134,6 +138,10 @@ namespace Plg.Compiler.Parsers
                 case TokenKind.TypeBool:
                     _tokenizer.NextTokenIs(TokenKind.TypeBool);
                     variable.Type = VariableType.Bool;
+                    break;
+                case TokenKind.TypePlg:
+                    _tokenizer.NextTokenIs(TokenKind.TypePlg);
+                    variable.Type = VariableType.Plg;
                     break;
             }
 

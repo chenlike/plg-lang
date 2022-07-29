@@ -118,7 +118,24 @@ fn test(a:string,b:number,c:plg) -> (string,plg){
             }
         }
 
-        
+
+        [Test]
+        public void ParseDefineFunc2()
+        {
+
+
+            var scope = Scope.CreateScope();
+
+            Parser parser = new Parser(@"
+            fn sa(a:string, b:number) -> (number, string) {
+
+
+            }
+");
+
+            var cmd = parser.ParseFunc(scope);
+            Console.WriteLine();
+        }
 
     }
 }

@@ -63,5 +63,10 @@ namespace Plg.Compiler.AST.Expressions
         /// </summary>
         public ICommand? Command { get; set; }
         
+        /// <summary>
+        /// 对象成员
+        /// </summary>
+        public string ObjectMember { get; set; }
+        
     }
 }

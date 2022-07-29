@@ -31,7 +31,7 @@ namespace PlgCompiler.Tests.ParserTests
             {
                 var scope = Scope.CreateScope();
 
-                Parser parser = new Parser("let stringTest:string = \"114514\";");
+                Parser parser = new Parser("let stringTest : string = \"114514\";");
                 var variable = parser.ParseDefineVariaible(scope).Variable;
 
                 Assert.IsTrue(variable.Name == "stringTest");
@@ -182,6 +182,22 @@ namespace PlgCompiler.Tests.ParserTests
 
         }
 
+
+
+        [Test]
+        public void ParseObjMember()
+        {
+            {
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("let test:plg = aa.bb.cc.dd;");
+                var variable = parser.ParseDefineVariaible(scope).Variable;
+
+                Assert.IsTrue(variable.Expression.Items[0].ObjectMember == ".bb.cc.dd");
+
+
+            }
+        }
 
     }
 }

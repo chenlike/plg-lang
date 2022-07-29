@@ -11,7 +11,7 @@ namespace Plg.Compiler.Lexer
         public static SortedDictionary<TokenKind, string> Map = new SortedDictionary<TokenKind, string>(){
             { TokenKind.Semicolon,";" },
             { TokenKind.Colon,":" },
-            { TokenKind.Colon,"." },
+            { TokenKind.Dot,"." },
             { TokenKind.Equal,"=" },
             { TokenKind.DoubleEqual,"==" },
             { TokenKind.Quote,"\"" },

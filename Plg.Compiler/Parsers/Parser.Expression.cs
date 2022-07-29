@@ -131,12 +131,42 @@ namespace Plg.Compiler.Parsers
                         else
                         {
 
+                            string member = "";
+
+                            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+                            // 判断是否是取成员变量
+                            // obj.xxx.sss.zzz
+                            if (_tokenizer.LookAhead().Kind == TokenKind.Dot)
+                            {
+                                
+                                var aheadToken = _tokenizer.LookAhead();
+                                while (aheadToken.Kind == TokenKind.Dot || aheadToken.Kind == TokenKind.Name)
+                                {
+                                    if (aheadToken.Kind == TokenKind.Dot)
+                                    {
+                                        _tokenizer.NextTokenIs(TokenKind.Dot);
+                                        member += ".";
+                                    }
+                                    else
+                                    {
+                                        var memberToken = _tokenizer.NextTokenIs(TokenKind.Name);
+                                        member += memberToken.Value;
+                                    }
+                                    _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+                                    aheadToken = _tokenizer.LookAhead();
+                                }
+                            }
+                            
                             expression.Items.Add(new ExpressionItem()
                             {
                                 Token = new Token() { Kind = TokenKind.Name,Value = name },
                                 Type = ExpressionItemType.Variable,
-                                Value = name
+                                Value = name,
+                                ObjectMember = member
                             });
+
+
+
                         }
 
 

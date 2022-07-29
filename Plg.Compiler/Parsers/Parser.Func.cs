@@ -99,7 +99,8 @@ namespace Plg.Compiler.Parsers
             {
                 // 跳过逗号
                 _tokenizer.LookAheadAndSkip(TokenKind.Comma);
-                
+                _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+
                 // a
                 var argNameToken = _tokenizer.NextTokenIs(TokenKind.Name);
                 _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
