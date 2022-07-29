@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Plg.Compiler.AST;
+using Plg.Compiler.AST.Commands;
 using Plg.Compiler.AST.Expressions;
 using Plg.Compiler.Lexer;
 
@@ -12,7 +14,9 @@ namespace Plg.Compiler.Parsers
     {
 
 
-        
+
+
+
         /// <summary>
         /// 解析表达式
         /// </summary>
@@ -41,8 +45,31 @@ namespace Plg.Compiler.Parsers
             var headToken = _tokenizer.LookAhead();
             
             // 遇到终止 ;  就结束
-            while (headToken.Kind != TokenKind.Semicolon && headToken.Kind != TokenKind.LeftCurly)
+            while (
+                headToken.Kind != TokenKind.Semicolon &&
+                headToken.Kind != TokenKind.LeftCurly && 
+                headToken.Kind != TokenKind.Comma)
             {
+
+
+                // 判断括号数量是否闭合
+                if(headToken.Kind == TokenKind.RightParenthesis)
+                {
+                    int leftParenthesisCount = expression.Items
+                        .Where(t => t.Type == ExpressionItemType.Parenthesis && t.Token.Kind == TokenKind.LeftParenthesis)
+                        .Count();
+                    int rightParenthesisCount = expression.Items
+                        .Where(t => t.Type == ExpressionItemType.Parenthesis && t.Token.Kind == TokenKind.RightParenthesis)
+                        .Count();
+                    
+                    if (leftParenthesisCount < (rightParenthesisCount + 1))
+                    {
+                        // 如果左括号比右括号数量少 说明应该结束这个表达式了
+                        break;
+                    }
+                }
+
+
 
                 switch (headToken.Kind)
                 {
@@ -80,13 +107,39 @@ namespace Plg.Compiler.Parsers
                         break;
                     // 变量名
                     case TokenKind.Name:
-                        var nameToken = _tokenizer.NextTokenIs(TokenKind.Name);
-                        expression.Items.Add(new ExpressionItem()
+
+                        // 变量名开头的情况有可能是调用方法
+
+                        _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+                        var nameToken = _tokenizer.LookAhead();
+                        
+                        string name = nameToken.Value;
+                        
+                        var tempScope = Scope.CreateScope();
+                        if (ParseVariableAssignOrCallFunc(tempScope))
                         {
-                            Token = nameToken,
-                            Type = ExpressionItemType.Variable,
-                            Value = nameToken.Value
-                        });
+                            // 解析方法或者 赋值成功了
+                            var cmd = tempScope.Commands.FirstOrDefault();
+                            expression.Items.Add(new ExpressionItem()
+                            {
+                                Token = new Token() { Kind = TokenKind.Name, Value = name },
+                                Type = ExpressionItemType.Command,
+                                Value = name,
+                                Command = cmd
+                            });
+                        }
+                        else
+                        {
+
+                            expression.Items.Add(new ExpressionItem()
+                            {
+                                Token = new Token() { Kind = TokenKind.Name,Value = name },
+                                Type = ExpressionItemType.Variable,
+                                Value = name
+                            });
+                        }
+
+
                         break;
                     // 操作符
                     case TokenKind.Add:
@@ -96,6 +149,8 @@ namespace Plg.Compiler.Parsers
                     case TokenKind.DoubleEqual:
                     case TokenKind.And:
                     case TokenKind.Or:
+                    case TokenKind.GreatThan:
+                    case TokenKind.LessThan:
                         expression.Items.Add(new ExpressionItem()
                         {
                             Token = new Token() { Kind = headToken.Kind},
@@ -107,7 +162,6 @@ namespace Plg.Compiler.Parsers
                     // 括号
                     case TokenKind.LeftParenthesis:
                     case TokenKind.RightParenthesis:
-
                         expression.Items.Add(new ExpressionItem()
                         {
                             Token = new Token() { Kind = headToken.Kind },

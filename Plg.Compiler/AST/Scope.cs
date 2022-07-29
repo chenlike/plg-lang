@@ -12,7 +12,7 @@ namespace Plg.Compiler.AST
 
         private Scope() { }
 
-        public static Scope CreateTopScope()
+        public static Scope CreateScope()
         {
             return new Scope()
             {

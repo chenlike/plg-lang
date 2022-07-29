@@ -23,6 +23,15 @@ namespace Plg.Compiler.AST.Commands
         /// If 语句
         /// </summary>
         IfStatement,
+        /// <summary>
+        /// for循环
+        /// </summary>
+        ForStatement,
+        
+        /// <summary>
+        /// 调用方法
+        /// </summary>
+        CallFunc,
         
 
     }

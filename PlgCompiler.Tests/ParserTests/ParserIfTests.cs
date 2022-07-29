@@ -13,7 +13,7 @@ namespace PlgCompiler.Tests.ParserTests
         public void ParseIf()
         {
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser(@"if ((1 == 2) && ab) {  let a:string = 2; } ");
                 var ifCmd = parser.ParseIf(scope);
@@ -35,7 +35,7 @@ namespace PlgCompiler.Tests.ParserTests
         public void ParseIfElse()
         {
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser(@"
 if(1 == 2) { 
@@ -66,7 +66,7 @@ let a:string = asd;
         public void ParseElIf()
         {
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser(@"
 if(1 == 2) { 
@@ -103,7 +103,7 @@ let a:string = asd;
         public void ParseContainIf()
         {
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser(@"
 if(1 == 2) { 

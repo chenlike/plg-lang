@@ -1,5 +1,6 @@
 ﻿using Plg.Compiler.AST;
 using Plg.Compiler.AST.Commands;
+using Plg.Compiler.AST.Expressions;
 using Plg.Compiler.Lexer;
 
 namespace Plg.Compiler.Parsers
@@ -18,7 +19,7 @@ namespace Plg.Compiler.Parsers
 
         public void Parse()
         {
-            Scope topScope = Scope.CreateTopScope();
+            Scope topScope = Scope.CreateScope();
             while (_tokenizer.LookAhead().Kind != TokenKind.EOF)
             {
                 ParseStatement(topScope);
@@ -36,13 +37,18 @@ namespace Plg.Compiler.Parsers
                     ParseDefineVariaible(scope);
                     break;
                 case TokenKind.Name:
-                    // 变量赋值语句
-                    ParseVariableAssign(scope);
+                    // name 开头的 可能是赋值语句或者调用方法
+                    ParseVariableAssignOrCallFunc(scope);
+                    _tokenizer.LookAheadAndSkip(TokenKind.Semicolon);
                     break;
                 case TokenKind.If:
                     ParseIf(scope);
                     break;
-                    
+                case TokenKind.For:
+                    ParseFor(scope);
+                    break;
+
+
             }
         }
 
@@ -95,174 +101,130 @@ namespace Plg.Compiler.Parsers
             _tokenizer.NextTokenIs(TokenKind.Equal);
             _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
             variable.Expression = ParseExpression();
-            
-            
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
             _tokenizer.NextTokenIs(TokenKind.Semicolon);
+
             var cmd = new DefineVariableCommand(variable);
             scope.Commands.Add(cmd);
             return cmd;
         }
 
+
+        /// <summary>
+        /// 解析赋值语句或者 调用方法
+        /// </summary>
+        /// <param name="scope"></param>
+        public bool ParseVariableAssignOrCallFunc(Scope scope)
+        {
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+            var name = _tokenizer.NextTokenIs(TokenKind.Name);
+
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+            bool parsed = false;
+
+            switch (_tokenizer.LookAhead().Kind)
+            {
+                case TokenKind.LeftParenthesis:
+                    // 调用函数
+                    parsed = true;
+                    ParseCallFunc(scope, name.Value);
+                    break;
+                case TokenKind.Increase:
+                case TokenKind.Decrease:
+                case TokenKind.AddEqual:
+                case TokenKind.SubEqual:
+                case TokenKind.MulEqual:
+                case TokenKind.DivEqual:
+                case TokenKind.Equal:
+                    parsed = true;
+                    // 变量赋值
+                    ParseVariableAssign(scope, name.Value);
+                    break;
+            }
+            return parsed;
+        }
+
+
         /// <summary>
         /// 解析变量赋值语句
         /// </summary>
-        /// <param name="scope"></param>
-        public void ParseVariableAssign(Scope scope)
+        public VariableAssignCommand ParseVariableAssign(Scope scope,string leftName)
         {
+
+
+
             // 变量赋值语句
 
             // a++; a--;
             // a+=1 a -=1;
             // a *= ab +2;
             // a = b;
-            
-            var name = _tokenizer.NextTokenIs(TokenKind.Name);
 
-            switch (_tokenizer.LookAhead().Kind)
+
+            VariableAssignCommand cmd = new VariableAssignCommand()
+            {
+                LeftVariableName = leftName,
+                
+            };
+
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+            var lookAhead = _tokenizer.LookAhead();
+            switch (lookAhead.Kind)
             {
 
                 case TokenKind.Increase:
-                    break;
                 case TokenKind.Decrease:
+
+                    _tokenizer.NextTokenIs(lookAhead.Kind);
+                    // ++ 和 -- 没有右侧表达式
+                    cmd.Operator = lookAhead.Kind;
                     break;
+
+
                 case TokenKind.AddEqual:
-                    break;
                 case TokenKind.SubEqual:
-                    break;
                 case TokenKind.MulEqual:
-                    break;
                 case TokenKind.DivEqual:
-                    break;
                 case TokenKind.Equal:
-                    break;
+                    // += -= *= /= =
+
+                    // 都需要右侧表达式
+                    _tokenizer.NextTokenIs(lookAhead.Kind);
+                    cmd.Operator = lookAhead.Kind;
+
                     
+                    _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+                    cmd.RightExpression = ParseExpression();
+                    break;
+
                 default:
                     break;
             }
 
-            
-            
-            
-            
-
-
-
-        }
-
-
-
-
-        /// <summary>
-        /// 解析if语句
-        /// </summary>
-        /// <param name="scope"></param>
-        /// <returns></returns>
-        public IfCommand ParseIf(Scope scope)
-        {   /*
-             if {
-            
-            }else{  }
-
-            if {
-            
-            }elif {  }else{  }
-            
-            
-
-            */
-
-            IfCommand cmd = new IfCommand();
-
+            // 吃掉分号
             _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
-            #region if开始
-            // if
-            _tokenizer.NextTokenIs(TokenKind.If);
-            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
-            // if 判断
-            var ifExpression = ParseExpression();
-            // {
-            _tokenizer.NextTokenIs(TokenKind.LeftCurly);
-            var ifScope = scope.CreateChildScope();
-            var ifExpressionScope = new IfExpressionScope()
+
+            if(scope != null)
             {
-                Expression = ifExpression,
-                Scope = ifScope
-            };
-
-            while (_tokenizer.LookAhead().Kind != TokenKind.RightCurly)
-            {
-                ParseStatement(ifExpressionScope.Scope);
-            }
-            // }
-            _tokenizer.NextTokenIs(TokenKind.RightCurly);
-
-            cmd.IfExpression = ifExpressionScope;
-            #endregion if结束
-
-            // 判断是否有elif 或者 else
-            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
-            var nextToken = _tokenizer.LookAhead();
-            while (nextToken.Kind == TokenKind.Elif || nextToken.Kind == TokenKind.Else)
-            {
-                /* 
-            if{
-            
-            }elif {
-                
-            }else{
-                
-            }
-                 */
-
-                if (nextToken.Kind == TokenKind.Elif)
-                {
-                    // 识别 elif 
-                    _tokenizer.NextTokenIs(TokenKind.Elif);
-                    var elifExpr = ParseExpression();
-                    _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
-                    // {
-                    _tokenizer.NextTokenIs(TokenKind.LeftCurly);
-                    var elifScope = scope.CreateChildScope();
-                    var elifExpressionScope = new IfExpressionScope()
-                    {
-                        Expression = elifExpr,
-                        Scope = elifScope
-                    };
-
-                    while (_tokenizer.LookAhead().Kind != TokenKind.RightCurly)
-                    {
-                        ParseStatement(elifExpressionScope.Scope);
-                    }
-                    // }
-
-                    cmd.ElifExpressions.Add(elifExpressionScope);
-                    _tokenizer.NextTokenIs(TokenKind.RightCurly);
-                }
-                else if (nextToken.Kind == TokenKind.Else)
-                {
-                    // 识别 else 
-                    _tokenizer.NextTokenIs(TokenKind.Else);
-                    _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
-                    // {
-                    _tokenizer.NextTokenIs(TokenKind.LeftCurly);
-                    var elseScope = scope.CreateChildScope();
-                    // }
-                    while (_tokenizer.LookAhead().Kind != TokenKind.RightCurly)
-                    {
-                        ParseStatement(elseScope);
-                    }
-                    cmd.ElseScope = elseScope;
-                    _tokenizer.NextTokenIs(TokenKind.RightCurly);
-                }
-                nextToken = _tokenizer.LookAhead();
-
+                scope.Commands.Add(cmd);
             }
 
-            scope.Commands.Add(cmd);
             return cmd;
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     }
-    
+
 }

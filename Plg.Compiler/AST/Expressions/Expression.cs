@@ -62,6 +62,7 @@ e.当为"#"时，弹出所有栈中的内容输出
                     case ExpressionItemType.String:
                     case ExpressionItemType.Number:
                     case ExpressionItemType.Variable:
+                    case ExpressionItemType.Command:
                         result.Add(item);
                         continue ;
                     default:

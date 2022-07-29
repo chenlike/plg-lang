@@ -17,7 +17,7 @@ namespace PlgCompiler.Tests.ParserTests
         public void ParseAssignment()
         {
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser("let numberTest:number = 1;");
                 var variable = parser.ParseDefineVariaible(scope).Variable;
@@ -29,7 +29,7 @@ namespace PlgCompiler.Tests.ParserTests
             }
 
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser("let stringTest:string = \"114514\";");
                 var variable = parser.ParseDefineVariaible(scope).Variable;
@@ -40,7 +40,7 @@ namespace PlgCompiler.Tests.ParserTests
             }
 
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser("let boolTest:bool =false;");
                 var variable = parser.ParseDefineVariaible(scope).Variable;
@@ -56,7 +56,7 @@ namespace PlgCompiler.Tests.ParserTests
         public void ReversePolishNotation()
         {
             {
-                var scope = Scope.CreateTopScope();
+                var scope = Scope.CreateScope();
 
                 Parser parser = new Parser("let numberTest:number = a+b*c+(d*e+f)*g;");
                 var variable = parser.ParseDefineVariaible(scope).Variable;
@@ -88,6 +88,99 @@ namespace PlgCompiler.Tests.ParserTests
             }
         }
 
+
+        [Test]
+        public void ParseVariableAssign()
+        {
+
+            {
+                
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a = b;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.Equal);
+                Assert.IsTrue(cmd.RightExpression.Items[0].Value == "b");
+            }
+
+            {
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a++;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.Increase);
+                Assert.IsTrue(cmd.RightExpression == null);
+            }
+            {
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a--;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.Decrease);
+                Assert.IsTrue(cmd.RightExpression == null);
+            }
+            
+            {
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a += 1;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.AddEqual);
+                Assert.IsTrue(cmd.RightExpression.Items[0].Value == "1");
+            }
+            {
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a -= 1;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.SubEqual);
+                Assert.IsTrue(cmd.RightExpression.Items[0].Value == "1");
+            }
+            {
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a *= 1;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.MulEqual);
+                Assert.IsTrue(cmd.RightExpression.Items[0].Value == "1");
+            }
+            {
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser("a /= 1;");
+                parser.ParseVariableAssignOrCallFunc(scope);
+                var cmd = scope.Commands[0] as VariableAssignCommand;
+                
+                Assert.IsTrue(cmd.LeftVariableName == "a");
+                Assert.IsTrue(cmd.Operator == TokenKind.DivEqual);
+                Assert.IsTrue(cmd.RightExpression.Items[0].Value == "1");
+            }
+
+        }
 
 
     }

@@ -1,4 +1,5 @@
-﻿using Plg.Compiler.Lexer;
+﻿using Plg.Compiler.AST.Commands;
+using Plg.Compiler.Lexer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,12 @@ namespace Plg.Compiler.AST.Expressions
         /// <summary>
         /// 括号
         /// </summary>
-        Parenthesis
+        Parenthesis,
+        /// <summary>
+        /// 命令
+        /// </summary>
+        Command,
+
     }
     /// <summary>
     /// 表达式组成Item
@@ -52,6 +58,10 @@ namespace Plg.Compiler.AST.Expressions
         /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// 命令 (Type == Command 时)
+        /// </summary>
+        public ICommand? Command { get; set; }
         
     }
 }
