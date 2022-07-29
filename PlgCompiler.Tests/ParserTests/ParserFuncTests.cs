@@ -61,5 +61,64 @@ namespace PlgCompiler.Tests.ParserTests
 
         }
 
+
+
+
+
+
+
+        [Test]
+        public void ParseDefineFunc()
+        {
+
+            {
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser(@"
+fn test(a:string){
+    print(a);
+}
+");
+
+                var cmd = parser.ParseFunc(scope);
+
+                Assert.IsTrue(cmd.FuncName == "test");
+                Assert.IsTrue(cmd.Arguments.Count == 1);
+                Assert.IsTrue(cmd.Arguments[0].Type == VariableType.String);
+                Assert.IsTrue(cmd.ReturnValues.Count == 0);
+
+                Assert.IsTrue(cmd.BodyScope.Commands[0].Type == CommandType.CallFunc);
+            }
+
+
+
+            {
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser(@"
+fn test(a:string,b:number,c:plg) -> (string,plg){
+    print(a);
+}
+");
+
+                var cmd = parser.ParseFunc(scope);
+
+                
+                Assert.IsTrue(cmd.FuncName == "test");
+                Assert.IsTrue(cmd.Arguments.Count == 3);
+                Assert.IsTrue(cmd.Arguments[0].Type == VariableType.String && cmd.Arguments[0].Name == "a");
+                Assert.IsTrue(cmd.Arguments[1].Type == VariableType.Number && cmd.Arguments[1].Name == "b");
+                Assert.IsTrue(cmd.Arguments[2].Type == VariableType.Plg && cmd.Arguments[2].Name == "c");
+                Assert.IsTrue(cmd.ReturnValues.Count == 2);
+                Assert.IsTrue(cmd.ReturnValues[0] == VariableType.String);
+                Assert.IsTrue(cmd.ReturnValues[1] == VariableType.Plg);
+
+                Assert.IsTrue(cmd.BodyScope.Commands[0].Type == CommandType.CallFunc);
+
+            }
+        }
+
+        
+
     }
 }

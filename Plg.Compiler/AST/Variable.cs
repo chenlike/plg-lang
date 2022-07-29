@@ -12,7 +12,8 @@ namespace Plg.Compiler.AST
     {
         String,
         Number,
-        Bool
+        Bool,
+        Plg
     }
         
     

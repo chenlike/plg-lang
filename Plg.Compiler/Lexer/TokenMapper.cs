@@ -11,6 +11,7 @@ namespace Plg.Compiler.Lexer
         public static SortedDictionary<TokenKind, string> Map = new SortedDictionary<TokenKind, string>(){
             { TokenKind.Semicolon,";" },
             { TokenKind.Colon,":" },
+            { TokenKind.Colon,"." },
             { TokenKind.Equal,"=" },
             { TokenKind.DoubleEqual,"==" },
             { TokenKind.Quote,"\"" },
@@ -48,6 +49,10 @@ namespace Plg.Compiler.Lexer
             { TokenKind.Elif,"elif" },
             { TokenKind.Else,"else" },
             { TokenKind.For,"for" },
+            { TokenKind.Arrow,"->" },
+            { TokenKind.Break,"break" },
+            { TokenKind.Continue,"continue" },
+            { TokenKind.Return,"return" },
 
 
             { TokenKind.TypeString,"string" },
@@ -57,6 +62,7 @@ namespace Plg.Compiler.Lexer
 
             { TokenKind.True,"true" },
             { TokenKind.Fasle,"false" },
+            
 
         };
 

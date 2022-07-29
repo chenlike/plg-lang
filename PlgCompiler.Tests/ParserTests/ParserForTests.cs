@@ -44,5 +44,55 @@ for(let i:number=0;i<10;i++)
             }
 
         }
+
+        [Test]
+        public void ParseBreak()
+        {
+            {
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser(@" break; ");
+                var cmd = parser.ParseBreak(scope);
+                Assert.IsTrue(cmd.TokenKind == TokenKind.Break);
+            }
+
+            {
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser(@" continue; ");
+                var cmd = parser.ParseBreak(scope);
+                Assert.IsTrue(cmd.TokenKind == TokenKind.Continue);
+            }
+
+            {
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser(@" return; ");
+                var cmd = parser.ParseBreak(scope);
+                Assert.IsTrue(cmd.TokenKind == TokenKind.Return && cmd.ReturnValues.Count == 0);
+            }
+
+            {
+
+
+                var scope = Scope.CreateScope();
+
+                Parser parser = new Parser(" return \"abc\",123,aaass,a+2; ");
+                var cmd = parser.ParseBreak(scope);
+                Assert.IsTrue(cmd.TokenKind == TokenKind.Return && cmd.ReturnValues.Count == 4);
+
+                var values = cmd.ReturnValues;
+
+                Assert.IsTrue(values[0].Items[0].Value == "abc");
+                Assert.IsTrue(values[1].Items[0].Value == "123");
+                Assert.IsTrue(values[2].Items[0].Value == "aaass");
+                Assert.IsTrue(values[3].Items[0].Value == "a");
+                Assert.IsTrue(values[3].Items[1].Value == "2");
+                Assert.IsTrue(values[3].Items[2].Value == "+");
+
+            }
+            
+
+        }
     }
 }

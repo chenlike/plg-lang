@@ -27,8 +27,10 @@ namespace Plg.Compiler.Lexer
         /// </summary>
         Number,
 
-        
-
+        /// <summary>
+        /// .
+        /// </summary>
+        Dot,
         /// <summary>
         /// 分号 ;
         /// </summary>
@@ -169,7 +171,22 @@ namespace Plg.Compiler.Lexer
         /// for
         /// </summary>
         For,
-
+        /// <summary>
+        /// ->
+        /// </summary>
+        Arrow,
+        /// <summary>
+        /// break
+        /// </summary>
+        Break,
+        /// <summary>
+        /// continue
+        /// </summary>
+        Continue,
+        /// <summary>
+        /// return
+        /// </summary>
+        Return,
 
 
 

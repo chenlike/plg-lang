@@ -32,6 +32,14 @@ namespace Plg.Compiler.AST.Commands
         /// 调用方法
         /// </summary>
         CallFunc,
+        /// <summary>
+        /// 定义方法
+        /// </summary>
+        DefineFunc,
+        /// <summary>
+        /// 中断
+        /// </summary>
+        Break
         
 
     }

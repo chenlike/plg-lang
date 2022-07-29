@@ -134,7 +134,7 @@ namespace Plg.Compiler.Lexer
             {
                 string t when t.StartsWith(";") => new Token() { Kind = TokenKind.Semicolon,Value = ";" },
                 string t when t.StartsWith(":") => new Token() { Kind = TokenKind.Colon, Value = ":" },
-                
+                string t when t.StartsWith(".") => new Token() { Kind = TokenKind.Dot, Value = "." },
 
                 string t when t.StartsWith("==") => new Token() { Kind = TokenKind.DoubleEqual, Value = "==" },
                 string t when t.StartsWith("=") => new Token() { Kind = TokenKind.Equal, Value = "=" },
@@ -150,7 +150,8 @@ namespace Plg.Compiler.Lexer
                 string t when t.StartsWith("&&") => new Token() { Kind = TokenKind.And, Value = "&&" },
                 string t when t.StartsWith("||") => new Token() { Kind = TokenKind.Or, Value = "||" },
 
-
+                string t when t.StartsWith("->") => new Token() { Kind = TokenKind.Arrow, Value = "->" },
+                
                 string t when t.StartsWith("+=") => new Token() { Kind = TokenKind.AddEqual, Value = "+=" },
                 string t when t.StartsWith("-=") => new Token() { Kind = TokenKind.SubEqual, Value = "-=" },
                 string t when t.StartsWith("*=") => new Token() { Kind = TokenKind.MulEqual, Value = "*=" },
@@ -177,6 +178,9 @@ namespace Plg.Compiler.Lexer
                 string t when new Regex(@"^elif(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Elif, Value = "elif" },
                 string t when new Regex(@"^else(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Else, Value = "else" },
                 string t when new Regex(@"^for(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.For, Value = "for" },
+                string t when new Regex(@"^break(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Break, Value = "break" },
+                string t when new Regex(@"^continue(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Continue, Value = "continue" },
+                string t when new Regex(@"^return(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.Return, Value = "return" },
 
                 string t when new Regex(@"^string(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeString, Value = "string" },
                 string t when new Regex(@"^number(?![_A-Za-z0-9])").IsMatch(t) => new Token() { Kind = TokenKind.TypeNumber, Value = "number" },

@@ -47,7 +47,11 @@ namespace Plg.Compiler.Parsers
                 case TokenKind.For:
                     ParseFor(scope);
                     break;
-
+                case TokenKind.Break:
+                case TokenKind.Continue:
+                case TokenKind.Return:
+                    ParseBreak(scope);
+                    break;
 
             }
         }
@@ -55,6 +59,43 @@ namespace Plg.Compiler.Parsers
            
 
 
+
+        /// <summary>
+        /// 中断语句
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <returns></returns>
+        public BreakCommand ParseBreak(Scope scope)
+        {
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+
+            var token = _tokenizer.LookAhead();
+
+            BreakCommand cmd = new BreakCommand();
+
+            cmd.TokenKind = token.Kind;
+            _tokenizer.NextTokenIs(token.Kind);
+            if (token.Kind == TokenKind.Return)
+            {
+                // 尝试读取返回值
+                _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+
+                while (_tokenizer.LookAheadAndSkip(TokenKind.Ignore).Kind != TokenKind.Semicolon)
+                {
+                    _tokenizer.LookAheadAndSkip(TokenKind.Comma);
+
+                    var expr = ParseExpression();
+                    cmd.ReturnValues.Add(expr);
+                }
+
+            }
+
+            
+            _tokenizer.LookAheadAndSkip(TokenKind.Ignore);
+            _tokenizer.NextTokenIs(TokenKind.Semicolon);
+            scope.Commands.Add(cmd);
+            return cmd;
+        }
 
         
         /// <summary>
@@ -79,7 +120,6 @@ namespace Plg.Compiler.Parsers
             {
                 Name = nameToken.Value
             };
-
             
             switch (_tokenizer.LookAhead().Kind)
             {

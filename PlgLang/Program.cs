@@ -33,15 +33,14 @@ for(let i:number = 0; i < 10; i++){
     variable2 += 1;        
 }
 
-fn sa(a:string,b:number) -> (sss:number,bbb:string) {
+fn sa(a:string,b:number) -> (number,string) {
 
 
 }
 
 print(variable);
 
-let res:plg = sa(variable1,variable2);
-let sss:string,b:string = sa(variable1,variable2);        
+let res:plg = sa(variable1,variable2);      
             
 res.sss == 1
 
