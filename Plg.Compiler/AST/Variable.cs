@@ -32,6 +32,12 @@ namespace Plg.Compiler.AST
         /// 表达式
         /// </summary>
         public Expression Expression { get; set; }
+
+        /// <summary>
+        /// 是否已经执行过表达式了
+        /// </summary>
+        public bool Executed { get { return Expression == null;  } }
+
         /// <summary>
         /// 当前值
         /// </summary>
