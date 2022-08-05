@@ -57,20 +57,68 @@ namespace Plg.Compiler.Backend.Runtimes
                     stack.Push(item.Value);
                 }
             }
-            Console.WriteLine();
 
-            return null;
+            var result = pop();
+            return result;
         }
 
         private string calculate(string left,string right, TokenKind opt,VariableType exceptType)
         {
-            throw new NotImplementedException();
-            switch (exceptType)
+            if (exceptType == VariableType.String)
             {
-                case VariableType.String:
-                    break;
+                if (opt != TokenKind.Add)
+                {
+                    throw new NotImplementedException($"操作符({opt.ToString()})不支持字符串");
+                }
+
+                return left + right;
+            }
+            else if (exceptType == VariableType.Number)
+            {
+              
+                if (decimal.TryParse(left,out var v1) && decimal.TryParse(right,out var v2))
+                {
+                    switch (opt)
+                    {
+                        case TokenKind.Add:
+                            return (v1 + v2).ToString();
+                        case TokenKind.Sub:
+                            return (v1 - v2).ToString();
+                        case TokenKind.Mul:
+                            return (v1 * v2).ToString();
+                        case TokenKind.Div:
+                            return (v1 / v2).ToString();
+                        default:
+                            throw new NotImplementedException($"操作符({opt.ToString()}) 未支持");
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException($"数字解析失败");
+                }
+
+            }
+            else if(exceptType == VariableType.Bool)
+            {
+                if (opt != TokenKind.Equal && opt != TokenKind.NotEqual)
+                {
+                    throw new NotImplementedException($"操作符({opt.ToString()})不支持bool");
+                }
+                if (left == right)
+                {
+                    return "true";
+                }
+                else
+                {
+                    return "false";
+                }
+            }
+            else
+            {
+                throw new Exception("不支持的类型");
             }
         }
+            
     }
 
 	

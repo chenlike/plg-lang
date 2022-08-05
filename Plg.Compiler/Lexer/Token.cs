@@ -47,6 +47,10 @@ namespace Plg.Compiler.Lexer
         /// == 
         /// </summary>
         DoubleEqual,
+        /// <summary>
+        /// !=
+        /// </summary>
+        NotEqual,
 
         /// <summary>
         /// 引号 "

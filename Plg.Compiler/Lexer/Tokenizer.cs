@@ -141,6 +141,7 @@ namespace Plg.Compiler.Lexer
                 string t when t.StartsWith(".") => new Token() { Kind = TokenKind.Dot, Value = "." },
 
                 string t when t.StartsWith("==") => new Token() { Kind = TokenKind.DoubleEqual, Value = "==" },
+                string t when t.StartsWith("!=") => new Token() { Kind = TokenKind.NotEqual, Value = "!=" },
                 string t when t.StartsWith("=") => new Token() { Kind = TokenKind.Equal, Value = "=" },
                 string t when t.StartsWith("\"") => new Token() { Kind = TokenKind.Quote, Value = "\"" },
                 string t when t.StartsWith(",") => new Token() { Kind = TokenKind.Comma, Value = "," },
@@ -200,7 +201,6 @@ namespace Plg.Compiler.Lexer
                 _ => throw new NotImplementedException(),
             };
             skipSouceCode(token.Value.Length);
-
             return token;
         }
 

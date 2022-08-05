@@ -177,6 +177,7 @@ namespace Plg.Compiler.Parsers
                     case TokenKind.Mul:
                     case TokenKind.Div:
                     case TokenKind.DoubleEqual:
+                    case TokenKind.NotEqual:
                     case TokenKind.And:
                     case TokenKind.Or:
                     case TokenKind.GreatThan:

@@ -10,12 +10,15 @@ namespace Plg.Compiler.Backend
 {
     public class Interpreter
     {
-
-
+        Runtime? _top = null;
+        public Interpreter()
+        {
+            _top = Runtime.Create();
+        }
+        
         public void Run(Scope scope)
         {
-            Runtime runtimeScope = Runtime.Create();
-            runtimeScope.ExecuteScope(scope);
+            _top?.ExecuteScope(scope);
         }
 
 

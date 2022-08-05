@@ -14,6 +14,7 @@ namespace Plg.Compiler.Lexer
             { TokenKind.Dot,"." },
             { TokenKind.Equal,"=" },
             { TokenKind.DoubleEqual,"==" },
+            { TokenKind.NotEqual,"!=" },
             { TokenKind.Quote,"\"" },
             { TokenKind.Comma,"," },
             { TokenKind.LeftCurly,"{" },
