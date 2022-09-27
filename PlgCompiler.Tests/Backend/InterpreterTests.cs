@@ -14,7 +14,8 @@ namespace PlgCompiler.Tests.Backend
 
             {
                 Parser parser = new Parser(@"
-let a:number = 1 + 2 * 3 + 3 + ""asd"";
+let a:number = 1;
+let b:number = a + 3 * 2;
 ");
                 var scope = parser.Parse();
                 var interpreter = new Interpreter();

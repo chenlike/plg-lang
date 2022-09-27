@@ -27,10 +27,10 @@ namespace Plg.Compiler.Backend.Runtimes
         
 		public string ExecuteExpression(Expression expression,VariableType exceptType)
         {
-            Stack<string> stack = new Stack<string>();
+            Stack<ExpressionItem> stack = new Stack<ExpressionItem>();
 
 
-            string pop()
+            ExpressionItem pop()
             {
                 if (stack.Count == 0)
                 {
@@ -54,15 +54,15 @@ namespace Plg.Compiler.Backend.Runtimes
                 }
                 else
                 {
-                    stack.Push(item.Value);
+                    stack.Push(item);
                 }
             }
 
             var result = pop();
-            return result;
+            return result.Value;
         }
 
-        private string calculate(string left,string right, TokenKind opt,VariableType exceptType)
+        private ExpressionItem calculate(ExpressionItem left, ExpressionItem right, TokenKind opt,VariableType exceptType)
         {
             if (exceptType == VariableType.String)
             {
@@ -71,12 +71,12 @@ namespace Plg.Compiler.Backend.Runtimes
                     throw new NotImplementedException($"操作符({opt.ToString()})不支持字符串");
                 }
 
-                return left + right;
+                return left.Value + right.Value;
             }
             else if (exceptType == VariableType.Number)
             {
               
-                if (decimal.TryParse(left,out var v1) && decimal.TryParse(right,out var v2))
+                if (decimal.TryParse(left.Value,out var v1) && decimal.TryParse(right.Value,out var v2))
                 {
                     switch (opt)
                     {
